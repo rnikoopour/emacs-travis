@@ -89,11 +89,6 @@ endif
 # The Ubuntu 14.04 image on Travis has an outdated GnuTLS which prevents us from
 # pulling from ELPA/MELPA under Emacs 26 and above.
 # See https://emacs.stackexchange.com/a/38404
-ifeq ($(MAJOR_VERSION),26)
-configure_emacs: install_gnutls
-else ifeq ($(EMACS_VERSION),snapshot)
-configure_emacs: install_gnutls
-endif
 
 # Tell recipe processes about the reported Emacs version
 export REPORTED_EMACS_VERSION
@@ -145,7 +140,7 @@ EMACS_DIR = $(HOME)/emacs/$(EMACS_VERSION)
 configure_emacs: download_emacs_stable
 endif
 
-install_emacs:
+install_emacs: install_gnutls
 	@echo "Install Emacs $(EMACS_VERSION)"
 	@make -j$(MAKE_JOBS) -C "$(EMACS_DIR)" V=0 install $(SILENT)
 ifeq ($(TRAVIS_OS_NAME),osx)
